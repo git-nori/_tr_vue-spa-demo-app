@@ -1,25 +1,36 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from './views/Home.vue'
+
+// pathと対応するcomponentを格納したmap
+const routerOptions = [
+  { path: '/', component: 'Landing' },
+  { path: '/home', component: 'Home' },
+  { path: '/signup', component: 'Signup' },
+  { path: '/signin', component: 'Signin' },
+]
+
+// 初期ロードの負荷を抑えるためにWebpackのCode Splittingを用いたDynamic Importを使い、routeに応じたコンポーネントをインポートする
+// 参照 => https://qiita.com/seya/items/06b160adb7801ae9e66f
+// 
+// ex. 下記と同様の処理を行っている
+// routes: [
+//   {
+//     path: '/',
+//     component: () => import('./views/Landing.vue')
+//   }
+// ]
+
+const routes = routerOptions.map(route => {
+  return {
+    ...route,
+    component: () => import(`./views/${route.component}.vue`)
+  }
+})
 
 Vue.use(Router)
 
 export default new Router({
   mode: 'history',
   base: process.env.BASE_URL,
-  routes: [
-    {
-      path: '/',
-      name: 'home',
-      component: Home
-    },
-    {
-      path: '/about',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "about" */ './views/About.vue')
-    }
-  ]
+  routes
 })
