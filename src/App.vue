@@ -49,7 +49,6 @@ export default {
   name: "App",
   data() {
     return {
-      appTitle: "Awesome App",
       sidebar: false,
       menuItems: [
         { title: "Home", path: "/home", icon: "mdi-home" },
@@ -57,6 +56,11 @@ export default {
         { title: "Sign In", path: "/signin", icon: "mdi-account-key" }
       ]
     };
+  },
+  computed: {
+    appTitle() {
+      return this.$store.state.appTitle;
+    }
   }
 };
 </script>
