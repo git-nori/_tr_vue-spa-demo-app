@@ -25,5 +25,16 @@ new Vue({
   router,
   store,
   vuetify,
-  render: h => h(App)
+  render: h => h(App),
+  created () {
+    // ユーザーがページをリロードするたびに、再度サインインする必要がないよう設定
+    // onAuthStateChangedオブザーバーはユーザーが既にサインインしていることを認識するとすぐにFirebaseユーザーに戻る
+    // オブザーバーをアタッチをし、ユーザーが正常にログインしていたらオブザーバーでユーザーに関する情報を取得する
+    firebase.auth().onAuthStateChanged((firebaseUser) => {
+      // 現在ユーザーがログインしているか判定
+      if (firebaseUser) {
+        store.dispatch('autoSignIn', firebaseUser)
+      }
+    })
+  },
 }).$mount('#app')

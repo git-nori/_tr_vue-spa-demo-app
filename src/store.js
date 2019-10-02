@@ -50,6 +50,9 @@ export default new Vuex.Store({
           commit('setError', error.message)
           commit('setLoading', false)
         })
+    },
+    autoSignIn ({ commit }, payload) {
+      commit('setUser', payload.email)
     }
   }
 })
