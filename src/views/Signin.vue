@@ -7,13 +7,15 @@
     </v-row>
     <v-row>
       <v-col xs="12" sm="6" class="text-center offset-sm3 mt-3">
-        <v-form>
+        <v-form @submit.prevent="userSignIn">
+          <v-alert type="error" dismissible v-model="alert">{{ error }}</v-alert>
           <v-text-field
             name="email"
             label="E-mail"
             type="email"
             id="email"
             required
+            v-model="email"
             :rules="emailRules"
           ></v-text-field>
           <v-text-field
@@ -22,6 +24,7 @@
             type="password"
             id="password"
             required
+            v-model="password"
             :rules="passwordRules"
           ></v-text-field>
         </v-form>
@@ -29,7 +32,7 @@
     </v-row>
     <v-row>
       <v-col xs="12" sm="6" class="text-center mt-5">
-        <v-btn color="primary" text>SIGN IN</v-btn>
+        <v-btn color="primary" text @click="userSignIn" :disabled="loading">SIGN IN</v-btn>
       </v-col>
     </v-row>
   </v-container>
@@ -44,8 +47,40 @@ export default {
         v => /.+@.+\..+/.test(v) || "E-mail must be valid"
       ],
       passwordRules: [v => !!v || "password is required"],
-      confirmPasswordRules: [v => !!v || "password is required"]
+      confirmPasswordRules: [v => !!v || "password is required"],
+      email: "",
+      password: "",
+      alert: false
     };
+  },
+  computed: {
+    error() {
+      return this.$store.state.error;
+    },
+    loading() {
+      return this.$store.state.loading;
+    }
+  },
+  methods: {
+    userSignIn() {
+      let userData = {
+        email: this.email,
+        password: this.password
+      };
+      this.$store.dispatch("userSingIn", userData);
+    }
+  },
+  watch: {
+    error(value) {
+      if (value) {
+        this.alert = true;
+      }
+    },
+    alert(value) {
+      if (!value) {
+        this.$store.commit("setError", null);
+      }
+    }
   }
 };
 </script>
