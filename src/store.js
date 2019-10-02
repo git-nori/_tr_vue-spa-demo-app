@@ -32,6 +32,7 @@ export default new Vuex.Store({
         .then(firebaseUser => {
           commit('setUser', { email: firebaseUser.user.email })
           commit('setLoading', false)
+          commit('setError', null)
           router.push('/home') // home画面にリダイレクトするよう設定
         }).catch(error => {
           commit('setError', error.message)
