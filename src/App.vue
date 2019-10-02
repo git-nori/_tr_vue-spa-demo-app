@@ -10,6 +10,14 @@
             <v-list-item-title>{{ item.title }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+        <v-list-item @click="userSignOut">
+          <v-list-item-icon>
+            <v-icon>mdi-exit-to-app</v-icon>
+          </v-list-item-icon>
+          <v-list-item-content>
+            <v-list-item-title>Sign Out</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
       </v-list>
     </v-navigation-drawer>
     <v-app-bar app>
@@ -34,6 +42,10 @@
         <v-btn text v-for="(item, index) in menuItems" :key="index" :to="item.path">
           <v-icon left>{{ item.icon }}</v-icon>
           <span>{{ item.title }}</span>
+        </v-btn>
+        <v-btn text @click="userSignOut">
+          <v-icon left>mdi-exit-to-app</v-icon>
+          <span>SIGN OUT</span>
         </v-btn>
       </v-toolbar-items>
     </v-app-bar>
@@ -60,6 +72,11 @@ export default {
   computed: {
     appTitle() {
       return this.$store.state.appTitle;
+    }
+  },
+  methods: {
+    userSignOut() {
+      this.$store.dispatch("userSignOut");
     }
   }
 };
