@@ -10,7 +10,7 @@
             <v-list-item-title>{{ item.title }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item @click="userSignOut">
+        <v-list-item @click="userSignOut" v-if="isAuthenticated">
           <v-list-item-icon>
             <v-icon>mdi-exit-to-app</v-icon>
           </v-list-item-icon>
@@ -43,7 +43,7 @@
           <v-icon left>{{ item.icon }}</v-icon>
           <span>{{ item.title }}</span>
         </v-btn>
-        <v-btn text @click="userSignOut">
+        <v-btn text @click="userSignOut" v-if="isAuthenticated">
           <v-icon left>mdi-exit-to-app</v-icon>
           <span>SIGN OUT</span>
         </v-btn>
@@ -61,17 +61,26 @@ export default {
   name: "App",
   data() {
     return {
-      sidebar: false,
-      menuItems: [
-        { title: "Home", path: "/home", icon: "mdi-home" },
-        { title: "Sign Up", path: "/signup", icon: "mdi-account-plus" },
-        { title: "Sign In", path: "/signin", icon: "mdi-account-key" }
-      ]
+      sidebar: false
     };
   },
   computed: {
     appTitle() {
       return this.$store.state.appTitle;
+    },
+    isAuthenticated() {
+      return this.$store.getters.isAuthenticated;
+    },
+    menuItems() {
+      // ユーザーが認証済みか判定
+      if (this.isAuthenticated) {
+        return [{ title: "Home", path: "/home", icon: "mdi-home" }];
+      } else {
+        return [
+          { title: "Sign Up", path: "/signup", icon: "mdi-account-plus" },
+          { title: "Sign In", path: "/signin", icon: "mdi-account-key" }
+        ];
+      }
     }
   },
   methods: {

@@ -12,6 +12,13 @@ export default new Vuex.Store({
     error: null,
     loading: false
   },
+  getters: {
+    // userが認証済みか判定し、結果をbooleanで返す
+    isAuthenticated (state) {
+      return state.user !== null && state.user !== undefined
+    }
+  }
+  ,
   mutations: {
     setUser (state, payload) {
       state.user = payload
