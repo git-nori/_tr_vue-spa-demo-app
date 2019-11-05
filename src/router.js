@@ -8,6 +8,7 @@ const routerOptions = [
   { path: '/home', component: 'Home', meta: { requiresAuth: true } }, // 認証済みのユーザーしかアクセスできないよう設定
   { path: '/signup', component: 'Signup' },
   { path: '/signin', component: 'Signin' },
+  { path: '*', component: 'NotFound' }
 ]
 
 // 初期ロードの負荷を抑えるためにWebpackのCode Splittingを用いたDynamic Importを使い、routeに応じたコンポーネントをインポートする
